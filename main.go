@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"strings"
@@ -11,25 +10,25 @@ import (
 // the <icon src="AllIcons.Actions.Execute"/> icon in the gutter and select the <b>Run</b> menu item from here.</p>
 
 func main() {
-	//to check arguments
+	//to check the arguments if its proper
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <input_file>")
+		fmt.Println("Usage: go run main.go <filePath>")
 		return
 	}
 	filePath := os.Args[1]
-	file, err := os.Open(filePath)
+	file, err := os.ReadFile(filePath)
 	if err != nil {
 		fmt.Printf("Error opening file: %v\n", err)
 		return
 	}
 	//to close the file after all the operations
-	defer file.Close()
+	defer fmt.Printf("Done with analysing log\n")
+	lines := strings.Split(string(file), "\n")
 	error := 0
 	warning := 0
 	info := 0
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
+
+	for _, line := range lines {
 
 		switch {
 		case strings.Contains(line, "ERROR"):
@@ -40,9 +39,7 @@ func main() {
 			info++
 		}
 	}
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error reading file: %v\n", err)
-	}
+
 	fmt.Println("Log Summary")
 	fmt.Printf("Errors: %v\n", error)
 	fmt.Printf("Warnings: %v\n", warning)
