@@ -29,7 +29,7 @@ func main() {
 		return
 	}
 
-	fmt.Println(" %.2f  %s  is equal to  %.2f %s \n", amt, fromC, res, toC)
+	fmt.Printf(" %.2f  %s  is equal to  %.2f %s \n", amt, fromC, res, toC)
 }
 
 func valid(amt, fromC, toC string) (float64, error) {
